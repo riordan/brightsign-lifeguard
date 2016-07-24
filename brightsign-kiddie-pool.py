@@ -1,15 +1,10 @@
-
-PRESENTATION_LOCATION = '../disk-publish'
-
-
 import shutil
 import os
 import xml.etree.cElementTree as ElementTree
 import argparse
 
-
-
-# XML dictionary parsing because I'm laaaazy
+# XML dictionary parsing because I'm laaaazy.
+# Also so this doesn't require any kind of pip installs
 # XML -> Dictionary code from Stack Overflow
 # https://stackoverflow.com/questions/8933237/how-to-find-if-directory-exists-in-python
 class XmlListConfig(list):
@@ -74,8 +69,12 @@ class XmlDictConfig(dict):
             else:
                 self.update({element.tag: element.text})
 
+parser = argparse.ArgumentParser()
+parser.add_argument("presentation_directory",
+    help="Root directory containing Brightsign presentation (local-sync.xml + pool/).")
+args = parser.parse_args()
+PRESENTATION_LOCATION = args.presentation_directory
 
-# In[93]:
 
 if os.path.isdir(PRESENTATION_LOCATION):
     if PRESENTATION_LOCATION[-1] != '/':
@@ -88,13 +87,15 @@ if not os.path.isdir(PRESENTATION_LOCATION+"kiddie_pool"):
     os.mkdir(PRESENTATION_LOCATION+"kiddie_pool")
 
 
+if not os.path.isfile(PRESENTATION_LOCATION + 'local-sync.xml'):
+    print("""Presentation directory is missing a local-sync.xml file.
+        Probably not a full Brightsign Presentation folder""")
+
 
 tree = ElementTree.parse(PRESENTATION_LOCATION + 'local-sync.xml')
 root = tree.getroot()
 xmldict = XmlDictConfig(root)
 
-
-# In[96]:
 
 for f in xmldict['files']['download']:
     try:
@@ -104,5 +105,4 @@ for f in xmldict['files']['download']:
     except:
         pass
 
-
-# In[ ]:
+print("Adult swim is over. Presentation files are now in the kiddle_pool.")
