@@ -71,7 +71,7 @@ class XmlDictConfig(dict):
 
 parser = argparse.ArgumentParser()
 parser.add_argument("presentation_directory",
-    help="Root directory containing Brightsign presentation (local-sync.xml + pool/).")
+    help="Root directory containing Brightsign presentation (current-sync.xml + pool/).")
 args = parser.parse_args()
 PRESENTATION_LOCATION = args.presentation_directory
 
@@ -87,12 +87,12 @@ if not os.path.isdir(PRESENTATION_LOCATION+"kiddie_pool"):
     os.mkdir(PRESENTATION_LOCATION+"kiddie_pool")
 
 
-if not os.path.isfile(PRESENTATION_LOCATION + 'local-sync.xml'):
-    print("""Presentation directory is missing a local-sync.xml file.
+if not os.path.isfile(PRESENTATION_LOCATION + 'current-sync.xml'):
+    print("""Presentation directory is missing a current-sync.xml file.
         Probably not a full Brightsign Presentation folder""")
 
 
-tree = ElementTree.parse(PRESENTATION_LOCATION + 'local-sync.xml')
+tree = ElementTree.parse(PRESENTATION_LOCATION + 'current-sync.xml')
 root = tree.getroot()
 xmldict = XmlDictConfig(root)
 
