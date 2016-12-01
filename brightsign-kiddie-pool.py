@@ -2,6 +2,9 @@ import shutil
 import os
 import xml.etree.cElementTree as ElementTree
 import argparse
+import logging
+
+errorcount = 0
 
 # XML dictionary parsing because I'm laaaazy.
 # Also so this doesn't require any kind of pip installs
@@ -97,12 +100,19 @@ root = tree.getroot()
 xmldict = XmlDictConfig(root)
 
 
+baseurl = xmldict['meta']['client']['base']
+
+
 for f in xmldict['files']['download']:
     try:
         link = f['link']
         name = f['name']
+        link = link[len(baseurl)+1:]
+
         shutil.copy2(PRESENTATION_LOCATION+link, PRESENTATION_LOCATION+"kiddie_pool/"+name)
     except:
+        errorcount+=1
+        logging.exception("ERRORCOUNT %d \nCouldn't find file: %s ||| %s" %(errorcount, PRESENTATION_LOCATION+link, name))
         pass
 
 print("Adult swim is over. Presentation files are now in the kiddle_pool.")
