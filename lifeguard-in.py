@@ -36,7 +36,20 @@ def indent(elem, level=0):
         if level and (not elem.tail or not elem.tail.strip()):
             elem.tail = i
 
+def listfiles(base_directory):
+    """
+    returns list of tuples of:
+    (relative paths of all files in base_directory, path names within base_directory)
+    """
 
+    filelist = []
+    for root,directories, filenames, in os.walk(base_directory):
+        for filename in filenames:
+            filepath = os.path.join(root, filename)
+            name = filepath[len(base_directory):]
+            filelist.append((filepath,name))
+
+    return filelist
 # PROGRAM
 parser = argparse.ArgumentParser()
 parser.add_argument("presentation_directory",
@@ -64,29 +77,29 @@ baseurl = root.find('./meta/client/base').text
 elfiles = ET.Element("files")
 
 
-for f in os.listdir(PRESENTATION_LOCATION+"kiddie_pool"):
+for fullpath, filename in listfiles(PRESENTATION_LOCATION+"kiddie_pool"):
 
-    pathf = PRESENTATION_LOCATION+"kiddie_pool/"+f
-    filename, file_extension = os.path.splitext(pathf)
+    nil, file_extension = os.path.splitext(filename)
     if file_extension == '.brs' or file_extension == ".bsfw" or file_extension == ".rok": script = True
     else: script = False
-    sha = sha1file(pathf)
-    size = os.path.getsize(pathf)
+
+    sha = sha1file(fullpath)
+    size = os.path.getsize(fullpath)
     poolpath = PRESENTATION_LOCATION+shapath(sha)
-    finalurl = baseurl+poolpath
+    finalurl = baseurl+"/"+shapath(sha)
 
     #print(f, pathf, sha, size, poolpath)
 
     # Copy the file
     #print(os.path.abspath(pathf), os.path.abspath(poolpath))
     #exit()
-    copyFile(os.path.abspath(pathf), os.path.abspath(poolpath))
+    copyFile(os.path.abspath(fullpath), os.path.abspath(poolpath))
 
     # Build XML Element
     eldownload = ET.Element("download")
 
     elname = ET.Element("name")
-    elname.text=f
+    elname.text=filename[1:]
     eldownload.append(elname)
 
     elhash = ET.Element("hash", {"method":"SHA1"})
