@@ -67,10 +67,21 @@ else:
 
 
 ##############################################################
-
-tree = ET.parse(PRESENTATION_LOCATION + 'template-sync.xml')
+if not os.path.exists(os.path.join(PRESENTATION_LOCATION, 'current-sync.xml')):
+    print("Missing a current-sync.xml file")
+    exit()
+tree = ET.parse(PRESENTATION_LOCATION + 'current-sync.xml')
 
 root = tree.getroot()
+
+#If there's a <files> element, kill it
+try:
+    root.remove(root.find('./files'))
+    print("<files> found, replacing")
+except:
+    print("Did not find a <files>. Passing")
+    pass
+
 baseurl = root.find('./meta/client/base').text
 # THIS IS THE THING! MAKE SENSE OF THE MADNESS!
 
