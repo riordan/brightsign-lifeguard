@@ -4,6 +4,7 @@ import xml.etree.cElementTree as ElementTree
 import argparse
 import logging
 from copyfile import copyFile
+from __future__ import print_function
 
 parser = argparse.ArgumentParser()
 parser.add_argument("presentation_directory",
