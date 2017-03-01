@@ -12,6 +12,12 @@ def touch(fname, times=None):
         os.utime(fname, times)
 
 def copyFile(src, dest):
+    """Copies a source file to a destination whose path may not yet exist.
+
+    Keyword arguments:
+    src -- Source path to a file (string)
+    dest -- Path for destination file (also a string)
+    """
     #Src Exists?
     try:
         if os.path.isfile(src):
