@@ -11,8 +11,8 @@ setup(name='brightsignlifeguard',
       install_requires=["copyfile==0.1.1"],
       entry_points={
         'console_scripts': [
-            'lifeguardIn=brightsignlifeguard:guardIn',
-            'lifeguardOut=brightsignlifeguard:guardOut',
+            'lifeguardIn=brightsignlifeguard.lifeguardIn:guardIn',
+            'lifeguardOut=brightsignlifeguard.lifeguardOut:guardOut',
         ],
     },
       zip_safe=False)

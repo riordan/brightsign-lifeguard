@@ -42,6 +42,3 @@ def theprogram():
         copyFile(os.path.abspath(filepath), os.path.abspath(PRESENTATION_LOCATION+"kiddie_pool/"+name))
 
     print("Adult swim is over. Presentation files are now in the kiddle_pool.")
-
-
-theprogram()

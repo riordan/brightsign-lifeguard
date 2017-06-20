@@ -162,6 +162,3 @@ def theprogram():
 
     indent(root)
     tree.write(PRESENTATION_LOCATION+'current-sync.xml', xml_declaration=True, encoding='utf-8')
-
-
-theprogram()
